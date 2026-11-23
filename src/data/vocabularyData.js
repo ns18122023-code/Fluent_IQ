@@ -160,3 +160,4 @@ export function getWordOfTheDay() {
   const index = dayOfYear % VOCABULARY_CATALOG.length;
   return VOCABULARY_CATALOG[index];
 }
+

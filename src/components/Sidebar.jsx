@@ -13,12 +13,11 @@ import {
   History,
   Settings,
   LogOut,
-  X,
-  Sparkles,
+  PanelLeftClose,
   AlertTriangle,
 } from 'lucide-react';
 
-export default function Sidebar({ mobileOpen, onCloseMobile }) {
+export default function Sidebar({ isOpen, onClose }) {
   const { activeTab, setActiveTab, stats } = useLearning();
 
   const navItems = [
@@ -43,27 +42,29 @@ export default function Sidebar({ mobileOpen, onCloseMobile }) {
 
   const handleSelect = (tabId) => {
     setActiveTab(tabId);
-    if (onCloseMobile) onCloseMobile();
+    if (window.innerWidth < 1024 && onClose) {
+      onClose();
+    }
   };
 
   return (
     <>
       {/* Mobile Backdrop */}
-      {mobileOpen && (
+      {isOpen && (
         <div
-          onClick={onCloseMobile}
-          className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm lg:hidden transition-opacity"
+          onClick={onClose}
+          className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs lg:hidden transition-opacity"
         />
       )}
 
       {/* Sidebar container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-slate-200/80 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-white border-r border-slate-200/80 flex flex-col transition-transform duration-200 ease-in-out ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Brand header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+        {/* Brand header with collapse button */}
+        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-sm font-bold text-base">
               IQ
@@ -75,11 +76,12 @@ export default function Sidebar({ mobileOpen, onCloseMobile }) {
           </div>
 
           <button
-            onClick={onCloseMobile}
-            aria-label="Close sidebar"
-            className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+            onClick={onClose}
+            aria-label="Hide sidebar"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition"
+            title="Hide sidebar"
           >
-            <X className="w-5 h-5" />
+            <PanelLeftClose className="w-5 h-5" />
           </button>
         </div>
 

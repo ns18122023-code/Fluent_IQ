@@ -19,7 +19,7 @@ import DailyChallengeModal from './components/DailyChallengeModal';
 
 export default function App() {
   const { activeTab } = useLearning();
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // If user is on landing page, display the dedicated landing view
   if (activeTab === 'landing') {
@@ -64,19 +64,26 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      {/* Top Navigation Bar */}
-      <Navbar onToggleMobileSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)} />
+      {/* Top Navigation Bar with Sidebar Toggle */}
+      <Navbar
+        sidebarOpen={sidebarOpen}
+        onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
+      />
 
       {/* Main Layout Body */}
       <div className="flex-1 flex">
-        {/* Sidebar Navigation */}
+        {/* Collapsible Sidebar Navigation */}
         <Sidebar
-          mobileOpen={mobileSidebarOpen}
-          onCloseMobile={() => setMobileSidebarOpen(false)}
+          isOpen={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
         />
 
         {/* Content View Area */}
-        <main className="flex-1 lg:pl-64 p-4 sm:p-6 lg:p-8 transition-all overflow-x-hidden">
+        <main
+          className={`flex-1 p-4 sm:p-6 lg:p-8 transition-all duration-200 overflow-x-hidden ${
+            sidebarOpen ? 'lg:pl-72' : 'lg:pl-8'
+          }`}
+        >
           {renderActiveModule()}
         </main>
       </div>

@@ -259,3 +259,4 @@ export default function ProgressAnalytics() {
     </div>
   );
 }
+

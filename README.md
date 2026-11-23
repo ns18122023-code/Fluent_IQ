@@ -162,3 +162,4 @@ In the Vercel Project Dashboard:
 
 ## 📄 License
 MIT License. Built for educational excellence.
+

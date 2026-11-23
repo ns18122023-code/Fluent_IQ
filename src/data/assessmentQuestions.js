@@ -357,3 +357,4 @@ export function calculateAssessmentResult(answers) {
     completedAt: new Date().toISOString()
   };
 }
+

@@ -4,48 +4,62 @@ import {
   Sparkles,
   Flame,
   Award,
-  Menu,
-  Clock,
-  MessageSquare,
   Zap,
   CheckCircle2,
+  PanelLeftClose,
+  PanelLeft,
 } from 'lucide-react';
 
-export default function Navbar({ onToggleMobileSidebar }) {
+export default function Navbar({ sidebarOpen, onToggleSidebar }) {
   const { profile, stats, dailyChallenge, setShowChallengeModal, setShowStyleCoachModal, setActiveTab } = useLearning();
 
   const isChallengeDone = dailyChallenge?.tasks?.every((t) => t.completed);
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-8 py-3 transition-all">
+    <header
+      className={`sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 transition-all duration-200 ${
+        sidebarOpen ? 'lg:pl-68 sm:px-6' : 'lg:pl-8 px-4 sm:px-8'
+      }`}
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        {/* Left: Mobile hamburger & Brand */}
+        {/* Left: Sidebar Toggle Button & Brand (when sidebar is hidden) */}
         <div className="flex items-center gap-3">
           <button
-            onClick={onToggleMobileSidebar}
-            aria-label="Toggle navigation menu"
-            className="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
+            onClick={onToggleSidebar}
+            aria-label={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+            className="p-2 rounded-xl text-slate-600 hover:text-brand-600 hover:bg-slate-100 transition flex items-center gap-1.5 focus:outline-none"
+            title={sidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
           >
-            <Menu className="w-5 h-5" />
+            {sidebarOpen ? (
+              <PanelLeftClose className="w-5 h-5 text-slate-500" />
+            ) : (
+              <PanelLeft className="w-5 h-5 text-brand-600" />
+            )}
+            {!sidebarOpen && (
+              <span className="text-xs font-semibold text-slate-600 hidden sm:inline">Menu</span>
+            )}
           </button>
 
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className="flex items-center gap-2.5 text-left group focus:outline-none"
-          >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
-              <span className="font-bold text-lg tracking-tight">IQ</span>
-            </div>
-            <div className="hidden sm:block">
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-lg text-slate-900 tracking-tight">Fluent</span>
-                <span className="font-extrabold text-lg text-brand-600 tracking-tight">IQ</span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
-                  AI
-                </span>
+          {/* Show full brand logo only when sidebar is collapsed so there is NO cut-off or duplicate */}
+          {!sidebarOpen && (
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className="flex items-center gap-2.5 text-left group focus:outline-none"
+            >
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-sm group-hover:scale-105 transition-transform">
+                <span className="font-bold text-base tracking-tight">IQ</span>
               </div>
-            </div>
-          </button>
+              <div className="hidden sm:block">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-extrabold text-lg text-slate-900 tracking-tight">Fluent</span>
+                  <span className="font-extrabold text-lg text-brand-600 tracking-tight">IQ</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
+                    AI
+                  </span>
+                </div>
+              </div>
+            </button>
+          )}
         </div>
 
         {/* Center / Right controls */}
